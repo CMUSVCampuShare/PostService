@@ -28,6 +28,7 @@ public class PostController {
         postEvent.setStatus("CREATED");
         postEvent.setMessage("Post has been created");
         postEvent.setPost(createdPost);
+        postProducer.sendMessage(postEvent);
 
         return createdPost;
     }
