@@ -1,5 +1,7 @@
 package com.campushare.post.controller;
 
+import com.campushare.post.dto.PostEvent;
+import com.campushare.post.kafka.PostProducer;
 import com.campushare.post.model.Post;
 import com.campushare.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,20 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private PostProducer postProducer;
+
     @PostMapping("/posts")
     @ResponseStatus(HttpStatus.CREATED)
     public Post createPost(@RequestBody Post post){
-        return postService.addPost(post);
+        Post createdPost = postService.addPost(post);
+
+        PostEvent postEvent = new PostEvent();
+        postEvent.setStatus("CREATED");
+        postEvent.setMessage("Post has been created");
+        postEvent.setPost(createdPost);
+
+        return createdPost;
     }
 
     @GetMapping("/posts")
