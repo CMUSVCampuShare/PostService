@@ -21,11 +21,6 @@ public class PostProducer {
     @Autowired
     private KafkaTemplate<String, PostEvent> kafkaTemplate;
 
-//    public PostProducer(NewTopic topic, KafkaTemplate<String, PostEvent> kafkaTemplate) {
-//        this.topic = topic;
-//        this.kafkaTemplate = kafkaTemplate;
-//    }
-
     public void sendMessage(PostEvent event) {
         LOGGER.info(String.format("Post event => %s", event.toString()));
 
