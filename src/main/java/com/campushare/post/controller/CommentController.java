@@ -30,7 +30,7 @@ public class CommentController {
 
     @GetMapping("/posts/{postId}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public List<Comment> getAllCommentsByPost(@PathVariable String postId){
+    public List<Comment> getAllCommentsByPostId(@PathVariable String postId){
         return commentService.findCommentsByPostId(postId);
     }
 }

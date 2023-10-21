@@ -32,7 +32,7 @@ public class PostController {
         return postService.findPostByPostId(postId);
     }
 
-    @PutMapping("/posts/:postId")
+    @PutMapping("/posts/{postId}")
     @ResponseStatus(HttpStatus.OK)
     public Post editPost(@RequestBody Post post){
         return postService.updatePost(post);
