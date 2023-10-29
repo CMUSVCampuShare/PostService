@@ -1,5 +1,6 @@
 package com.campushare.post.service;
 
+import com.campushare.post.exception.PostNotFoundException;
 import com.campushare.post.model.Post;
 import com.campushare.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,17 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public Post addPost(Post post) {
+    public Post addPost(Post post) throws IllegalArgumentException, PostNotFoundException {
+        if (post == null) {
+            throw new IllegalArgumentException("Post cannot be null.");
+        }
+
+        if(post.getNoOfSeats() != null) {
+            if(isInvalidNoOfSeats(post)) {
+                throw new IllegalArgumentException("No of seats cannot be negative!");
+            }
+        }
+
         post.setPostId(UUID.randomUUID().toString().split("-")[0]);
         return postRepository.save(post);
     }
@@ -24,45 +35,62 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post findPostByPostId(String postId) {
-        return postRepository.findById(postId).get();
-    }
-
-    public Post updatePost(String postId, Post post) throws Exception {
-        // Check if post is null
-        if (post == null) {
-            throw new IllegalArgumentException("Post cannot be null.");
-        }
-
-        // Check if postRepository.findById(postId) returns a value
+    public Post findPostByPostId(String postId) throws PostNotFoundException {
         Optional<Post> optionalExistingPost = postRepository.findById(postId);
+
         if (!optionalExistingPost.isPresent()) {
-            throw new Exception("Post with ID " + postId + " not found.");
+            throw new PostNotFoundException(postId);
         }
 
         Post existingPost = optionalExistingPost.get();
 
-        // Check and update individual properties if they are not null in the incoming post
+        return existingPost;
+    }
+
+    public Post updatePost(String postId, Post post) throws IllegalArgumentException, PostNotFoundException {
+        if (post == null) {
+            throw new IllegalArgumentException("Post cannot be null.");
+        }
+
+        Optional<Post> optionalExistingPost = postRepository.findById(postId);
+        if (!optionalExistingPost.isPresent()) {
+            throw new PostNotFoundException(postId);
+        }
+
+        Post existingPost = optionalExistingPost.get();
+
         if (post.getTitle() != null) {
             existingPost.setTitle(post.getTitle());
         }
         if (post.getDetails() != null) {
             existingPost.setDetails(post.getDetails());
         }
+        if (post.getType() != null) {
+            existingPost.setType(post.getType());
+        }
         if (post.getNoOfSeats() != null) {
+            if(isInvalidNoOfSeats(post)) {
+                throw new IllegalArgumentException("No of seats cannot be negative!");
+            }
             existingPost.setNoOfSeats(post.getNoOfSeats());
         }
         if (post.getStatus() != null) {
             existingPost.setStatus(post.getStatus());
         }
-        if (post.getComments() != null) {
-            existingPost.setComments(post.getComments());
-        }
 
         return postRepository.save(existingPost);
     }
 
-    public void deletePost(String postId) {
+    public void deletePost(String postId) throws PostNotFoundException {
+        Optional<Post> optionalExistingPost = postRepository.findById(postId);
+        if (!optionalExistingPost.isPresent()) {
+            throw new PostNotFoundException(postId);
+        }
+
         postRepository.deleteById(postId);
+    }
+
+    private boolean isInvalidNoOfSeats(Post post) {
+        return post.getNoOfSeats() < 0;
     }
 }

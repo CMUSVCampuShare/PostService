@@ -7,6 +7,7 @@ import com.campushare.post.service.PostService;
 import com.campushare.post.utils.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,44 +22,68 @@ public class PostController {
     private PostProducer postProducer;
 
     @PostMapping("/posts")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Post createPost(@RequestBody Post post){
-        Post createdPost = postService.addPost(post);
+    public ResponseEntity<Post> createPost(@RequestBody Post post){
+        ResponseEntity<Post> responseEntity;
+        try {
+            Post createdPost = postService.addPost(post);
 
-        PostDTO postDTO = new PostDTO();
-        postDTO.setPost(createdPost);
-        postProducer.sendMessage(Topic.CREATE, postDTO);
+            PostDTO postDTO = new PostDTO();
+            postDTO.setPost(createdPost);
+            postProducer.sendMessage(Topic.CREATE, postDTO);
 
-        return createdPost;
+            responseEntity = new ResponseEntity<>(createdPost, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
     }
 
     @GetMapping("/posts")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Post> getAllPosts(){
-        return postService.findAllPosts();
+    public ResponseEntity<List<Post>> getAllPosts(){
+        ResponseEntity<List<Post>> responseEntity;
+        try {
+            List<Post> posts = postService.findAllPosts();
+            responseEntity = new ResponseEntity<>(posts, HttpStatus.OK);
+        } catch (Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
     }
 
     @GetMapping("/posts/{postId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Post getPost(@PathVariable String postId){
-        return postService.findPostByPostId(postId);
+    public ResponseEntity<Post> getPost(@PathVariable String postId){
+        ResponseEntity<Post> responseEntity;
+        try {
+            Post post = postService.findPostByPostId(postId);
+            responseEntity = new ResponseEntity<>(post, HttpStatus.OK);
+        } catch(Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
     }
 
     @PutMapping("/posts/{postId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Post editPost(@PathVariable String postId, @RequestBody Post post) throws Exception {
-        Post editedPost = postService.updatePost(postId, post);
+    public ResponseEntity<Post> editPost(@PathVariable String postId, @RequestBody Post post) {
+        ResponseEntity<Post> responseEntity;
+        try {
+            Post editedPost = postService.updatePost(postId, post);
 
-        PostDTO postDTO = new PostDTO();
-        postDTO.setPost(editedPost);
-        postProducer.sendMessage(Topic.EDIT, postDTO);
+            PostDTO postDTO = new PostDTO();
+            postDTO.setPost(editedPost);
+            postProducer.sendMessage(Topic.EDIT, postDTO);
 
-        return editedPost;
+            responseEntity = new ResponseEntity<>(editedPost, HttpStatus.OK);
+        } catch(Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return  responseEntity;
     }
 
     @DeleteMapping("/posts/{postId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deletePost(@RequestBody String postId){
+    public ResponseEntity<Void> deletePost(@RequestBody String postId){
+        ResponseEntity<Void> responseEntity = null;
         postService.deletePost(postId);
+        responseEntity = new ResponseEntity<>(HttpStatus.OK);
+        return responseEntity;
     }
 }
