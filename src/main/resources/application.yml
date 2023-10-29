@@ -1,5 +1,13 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017
+      uri: mongodb+srv://campushareAdmin:campusharePassword@clustercampushare.qhbomhf.mongodb.net/?retryWrites=true&w=majority
       database: PostDB
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    topic:
+      create-post-topic-name: create_post_topic
+      edit-post-topic-name: edit_post_topic

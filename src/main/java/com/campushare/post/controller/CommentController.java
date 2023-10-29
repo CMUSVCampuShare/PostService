@@ -6,6 +6,7 @@ import com.campushare.post.service.CommentService;
 import com.campushare.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,18 +20,33 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/posts/{postId}/comments")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Comment createComment(@PathVariable String postId, @RequestBody Comment comment){
-        Post post = postService.findPostByPostId(postId);
-        Comment createdComment = commentService.addComment(postId, comment);
-        post.getComments().add(comment);
-        postService.updatePost(post);
-        return createdComment;
+    public ResponseEntity<Comment>  createComment(@PathVariable String postId, @RequestBody Comment comment) {
+        ResponseEntity<Comment> responseEntity;
+        try {
+            Post post = postService.findPostByPostId(postId);
+
+            Comment createdComment = commentService.addComment(postId, comment);
+
+            post.getComments().add(comment);
+            postService.updatePost(postId, post);
+
+            responseEntity = new ResponseEntity<>(createdComment, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return responseEntity;
     }
 
     @GetMapping("/posts/{postId}/comments")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Comment> getAllCommentsByPostId(@PathVariable String postId){
-        return commentService.findCommentsByPostId(postId);
+    public ResponseEntity<List<Comment>> getAllCommentsByPostId(@PathVariable String postId){
+        ResponseEntity<List<Comment>> responseEntity;
+        try {
+            List<Comment> comments = commentService.findCommentsByPostId(postId);
+            responseEntity = new ResponseEntity<>(comments, HttpStatus.OK);
+        } catch (Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
     }
 }
