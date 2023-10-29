@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017
+      uri: mongodb+srv://campushareAdmin:campusharePassword@clustercampushare.qhbomhf.mongodb.net/?retryWrites=true&w=majority
       database: PostDB
   kafka:
     producer:
