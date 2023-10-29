@@ -15,7 +15,6 @@ public class KafkaTopicConfig {
     @Value("${spring.kafka.topic.edit-post-topic-name}")
     private String editPostTopicName;
 
-    @Primary
     @Bean
     public NewTopic createPostTopic() {
         return TopicBuilder
