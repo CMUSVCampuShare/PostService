@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,13 +28,41 @@ public class PostService {
         return postRepository.findById(postId).get();
     }
 
-    public Post updatePost(Post postRequest) {
-        Post existingPost = postRepository.findById(postRequest.getPostId()).get();
-        existingPost.setTitle(postRequest.getTitle());
-        existingPost.setDetails(postRequest.getDetails());
-        existingPost.setNoOfSeats(postRequest.getNoOfSeats());
-        existingPost.setStatus(postRequest.getStatus());
-        existingPost.setComments(postRequest.getComments());
+    public Post updatePost(String postId, Post post) throws Exception {
+        // Check if post is null
+        if (post == null) {
+            throw new IllegalArgumentException("Post cannot be null.");
+        }
+
+        // Check if postRepository.findById(postId) returns a value
+        Optional<Post> optionalExistingPost = postRepository.findById(postId);
+        if (!optionalExistingPost.isPresent()) {
+            throw new Exception("Post with ID " + postId + " not found.");
+        }
+
+        Post existingPost = optionalExistingPost.get();
+
+        // Check and update individual properties if they are not null in the incoming post
+        if (post.getTitle() != null) {
+            existingPost.setTitle(post.getTitle());
+        }
+        if (post.getDetails() != null) {
+            existingPost.setDetails(post.getDetails());
+        }
+        if (post.getNoOfSeats() != null) {
+            existingPost.setNoOfSeats(post.getNoOfSeats());
+        }
+        if (post.getStatus() != null) {
+            existingPost.setStatus(post.getStatus());
+        }
+        if (post.getComments() != null) {
+            existingPost.setComments(post.getComments());
+        }
+
         return postRepository.save(existingPost);
+    }
+
+    public void deletePost(String postId) {
+        postRepository.deleteById(postId);
     }
 }

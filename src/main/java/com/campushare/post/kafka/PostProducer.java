@@ -1,6 +1,7 @@
 package com.campushare.post.kafka;
 
-import com.campushare.post.dto.PostEvent;
+import com.campushare.post.dto.PostDTO;
+import com.campushare.post.utils.Topic;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +17,28 @@ public class PostProducer {
     private static final Logger LOGGER = Logger.getLogger(PostProducer.class);
 
     @Autowired
-    private NewTopic topic;
+    private NewTopic createPostTopicName;
 
     @Autowired
-    private KafkaTemplate<String, PostEvent> kafkaTemplate;
+    private NewTopic editPostTopicName;
 
-    public void sendMessage(PostEvent event) {
-        LOGGER.info(String.format("Post event => %s", event.toString()));
+    @Autowired
+    private KafkaTemplate<String, PostDTO> kafkaTemplate;
 
-        Message<PostEvent> message = MessageBuilder
-                .withPayload(event)
-                .setHeader(KafkaHeaders.TOPIC, topic.name())
-                .build();
+    public void sendMessage(Topic topic, PostDTO dto) {
+        LOGGER.info(String.format("Post event => %s", dto.toString()));
+        Message<PostDTO> message;
+        if (topic == Topic.CREATE) {
+            message = MessageBuilder
+                    .withPayload(dto)
+                    .setHeader(KafkaHeaders.TOPIC, createPostTopicName.name())
+                    .build();
+        } else {
+            message = MessageBuilder
+                    .withPayload(dto)
+                    .setHeader(KafkaHeaders.TOPIC, editPostTopicName.name())
+                    .build();
+        }
         kafkaTemplate.send(message);
     }
 }

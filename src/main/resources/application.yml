@@ -9,4 +9,5 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     topic:
-      name: post_topic
+      create-post-topic-name: create_post_topic
+      edit-post-topic-name: edit_post_topic

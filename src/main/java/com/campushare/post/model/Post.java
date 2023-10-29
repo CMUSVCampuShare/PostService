@@ -1,5 +1,7 @@
 package com.campushare.post.model;
 
+import com.campushare.post.utils.Status;
+import com.campushare.post.utils.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,9 +21,9 @@ public class Post {
     private String userId;
     private String title;
     private String details;
-    private String type;
+    private Type type;
     private Integer noOfSeats;
-    private String status;
+    private Status status;
     private Date timestamp;
     private List<Comment> comments;
 }

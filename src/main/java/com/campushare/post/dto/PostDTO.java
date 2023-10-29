@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostEvent {
-    private String message;
-    private String status;
+public class PostDTO {
     private Post post;
 }

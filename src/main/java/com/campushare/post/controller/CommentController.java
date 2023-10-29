@@ -20,11 +20,11 @@ public class CommentController {
 
     @PostMapping("/posts/{postId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public Comment createComment(@PathVariable String postId, @RequestBody Comment comment){
+    public Comment createComment(@PathVariable String postId, @RequestBody Comment comment) throws Exception {
         Post post = postService.findPostByPostId(postId);
         Comment createdComment = commentService.addComment(postId, comment);
         post.getComments().add(comment);
-        postService.updatePost(post);
+        postService.updatePost(postId, post);
         return createdComment;
     }
 
