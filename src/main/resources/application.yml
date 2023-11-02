@@ -4,8 +4,8 @@ spring:
       uri: mongodb+srv://campushareAdmin:campusharePassword@clustercampushare.qhbomhf.mongodb.net/?retryWrites=true&w=majority
       database: PostDB
   kafka:
+    bootstrap-servers: 35.219.146.212:9092
     producer:
-      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     topic:
