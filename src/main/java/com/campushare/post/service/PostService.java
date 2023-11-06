@@ -28,7 +28,7 @@ public class PostService {
             }
         }
 
-        post.setPostId(UUID.randomUUID().toString().split("-")[0]);
+        post.setPostId(UUID.randomUUID().toString());
         return postRepository.save(post);
     }
 
