@@ -50,6 +50,18 @@ public class PostController {
         return responseEntity;
     }
 
+    @GetMapping("/posts/active")
+    public ResponseEntity<List<Post>> getAllActivePosts(){
+        ResponseEntity<List<Post>> responseEntity;
+        try {
+            List<Post> posts = postService.findAllActivePosts();
+            responseEntity = new ResponseEntity<>(posts, HttpStatus.OK);
+        } catch (Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
     @GetMapping("/posts/{postId}")
     public ResponseEntity<Post> getPost(@PathVariable String postId){
         ResponseEntity<Post> responseEntity;

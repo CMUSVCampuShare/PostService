@@ -3,6 +3,7 @@ package com.campushare.post.service;
 import com.campushare.post.exception.PostNotFoundException;
 import com.campushare.post.model.Post;
 import com.campushare.post.repository.PostRepository;
+import com.campushare.post.utils.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,10 @@ public class PostService {
 
     public List<Post> findAllPosts() {
         return postRepository.findAll();
+    }
+
+    public List<Post> findAllActivePosts() {
+        return postRepository.findByStatusNot(Status.CANCELED);
     }
 
     public Post findPostByPostId(String postId) throws PostNotFoundException {
