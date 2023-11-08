@@ -3,7 +3,9 @@ package com.campushare.post.controller;
 import com.campushare.post.dto.PostDTO;
 import com.campushare.post.kafka.PostProducer;
 import com.campushare.post.model.Post;
+import com.campushare.post.request.PostRequest;
 import com.campushare.post.service.PostService;
+import com.campushare.post.service.RidePostFactory;
 import com.campushare.post.utils.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,11 +23,15 @@ public class PostController {
     @Autowired
     private PostProducer postProducer;
 
+    @Autowired
+    private RidePostFactory ridePostFactory;
+
+
     @PostMapping("/posts")
-    public ResponseEntity<Post> createPost(@RequestBody Post post){
+    public ResponseEntity<Post> createPost(@RequestBody PostRequest postRequest){
         ResponseEntity<Post> responseEntity;
         try {
-            Post createdPost = postService.addPost(post);
+            Post createdPost = postService.addPost(postRequest);
 
             PostDTO postDTO = new PostDTO();
             postDTO.setPost(createdPost);
@@ -74,28 +80,28 @@ public class PostController {
         return responseEntity;
     }
 
-    @PutMapping("/posts/{postId}")
-    public ResponseEntity<Post> editPost(@PathVariable String postId, @RequestBody Post post) {
-        ResponseEntity<Post> responseEntity;
-        try {
-            Post editedPost = postService.updatePost(postId, post);
-
-            PostDTO postDTO = new PostDTO();
-            postDTO.setPost(editedPost);
-            postProducer.sendMessage(Topic.EDIT, postDTO);
-
-            responseEntity = new ResponseEntity<>(editedPost, HttpStatus.OK);
-        } catch(Exception ex) {
-            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return  responseEntity;
-    }
-
-    @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<Void> deletePost(@RequestBody String postId){
-        ResponseEntity<Void> responseEntity = null;
-        postService.deletePost(postId);
-        responseEntity = new ResponseEntity<>(HttpStatus.OK);
-        return responseEntity;
-    }
+//    @PutMapping("/posts/{postId}")
+//    public ResponseEntity<Post> editPost(@PathVariable String postId, @RequestBody PostRequest postRequest) {
+//        ResponseEntity<Post> responseEntity;
+//        try {
+//            Post editedPost = postService.updatePost(postId, postRequest);
+//
+//            PostDTO postDTO = new PostDTO();
+//            postDTO.setPost(editedPost);
+//            postProducer.sendMessage(Topic.EDIT, postDTO);
+//
+//            responseEntity = new ResponseEntity<>(editedPost, HttpStatus.OK);
+//        } catch(Exception ex) {
+//            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//        return  responseEntity;
+//    }
+//
+//    @DeleteMapping("/posts/{postId}")
+//    public ResponseEntity<Void> deletePost(@PathVariable String postId){
+//        ResponseEntity<Void> responseEntity = null;
+//        postService.deletePost(postId);
+//        responseEntity = new ResponseEntity<>(HttpStatus.OK);
+//        return responseEntity;
+//    }
 }
