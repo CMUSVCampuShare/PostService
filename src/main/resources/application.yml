@@ -11,3 +11,13 @@ spring:
     topic:
       create-post-topic-name: create_post_topic
       edit-post-topic-name: edit_post_topic
+    datasource:
+      username: root
+      password: password
+      url: jdbc:mysql://localhost:3306/test
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      show-sql: true
+      hibernate:
+      ddl-auto: update
+      properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
