@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public abstract class Post {
     @Id
     private String postId;
     private String userId;
@@ -26,4 +26,15 @@ public class Post {
     private Status status;
     private Date timestamp;
     private List<Comment> comments;
+
+    public Post(String userId, String title, String details,  Type type, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) {
+        this.userId = userId;
+        this.title = title;
+        this.details = details;
+        this.type = type;
+        this.noOfSeats = noOfSeats;
+        this.status = status;
+        this.timestamp = timestamp == null ? new Date() : timestamp;
+        this.comments = comments;
+    }
 }

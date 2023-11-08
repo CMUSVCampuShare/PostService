@@ -3,7 +3,9 @@ package com.campushare.post.controller;
 import com.campushare.post.dto.PostDTO;
 import com.campushare.post.kafka.PostProducer;
 import com.campushare.post.model.Post;
+import com.campushare.post.request.PostRequest;
 import com.campushare.post.service.PostService;
+import com.campushare.post.utils.PostFactory;
 import com.campushare.post.utils.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +23,14 @@ public class PostController {
     @Autowired
     private PostProducer postProducer;
 
+    @Autowired
+    private PostFactory postFactory;
+
     @PostMapping("/posts")
-    public ResponseEntity<Post> createPost(@RequestBody Post post){
+    public ResponseEntity<Post> createPost(@RequestBody PostRequest postRequest){
         ResponseEntity<Post> responseEntity;
         try {
+            Post post = postFactory.createPost(postRequest.getUserId(), postRequest.getTitle(), postRequest.getDetails(), postRequest.getType(), postRequest.getNoOfSeats(), postRequest.getStatus(), postRequest.getTimestamp(), postRequest.getComments());
             Post createdPost = postService.addPost(post);
 
             PostDTO postDTO = new PostDTO();
