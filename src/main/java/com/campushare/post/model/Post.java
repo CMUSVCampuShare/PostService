@@ -27,7 +27,7 @@ public class Post {
 
     public Post() {}
 
-    public Post(String postId, String userId, String title, String from, String to, String details, Type type, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) {
+    public Post(String postId, String userId, String title, String from, String to, String details, Type type, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) throws IllegalArgumentException {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
@@ -39,5 +39,10 @@ public class Post {
         this.status = status;
         this.timestamp = timestamp;
         this.comments = comments;
+        performNullChecks();
+    }
+
+    protected void performNullChecks() throws IllegalArgumentException {
+        // ...
     }
 }

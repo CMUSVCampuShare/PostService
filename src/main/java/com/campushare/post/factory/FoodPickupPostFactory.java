@@ -19,7 +19,11 @@ public class FoodPickupPostFactory extends PostFactory {
     }
 
     @Override
-    public Post createPost(String postId, String userId, String title, String from, String to, String details, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) {
-        return new FoodPickupPost(postId, userId, title, from, to, details, Type.FOODPICKUP, noOfSeats, status, timestamp, comments);
+    public Post createPost(String postId, String userId, String title, String from, String to, String details, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) throws IllegalArgumentException {
+        try {
+            return new FoodPickupPost(postId, userId, title, from, "", details, Type.FOODPICKUP, 0, status, timestamp, comments);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
     }
 }

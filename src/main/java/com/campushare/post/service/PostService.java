@@ -27,28 +27,26 @@ public class PostService {
             throw new IllegalArgumentException("Post cannot be null.");
         }
 
-        if(post.getNoOfSeats() != null) {
-            if(isInvalidNoOfSeats(post)) {
-                throw new IllegalArgumentException("No of seats cannot be negative!");
-            }
-        }
-
         PostFactory postFactory = postFactoryRegistry.getPostFactory(post.getType());
 
-        Post newPost = postFactory.createPost(
-                UUID.randomUUID().toString(),
-                post.getUserId(),
-                post.getTitle(),
-                post.getFrom(),
-                post.getTo(),
-                post.getDetails(),
-                post.getNoOfSeats(),
-                post.getStatus(),
-                post.getTimestamp(),
-                post.getComments()
-        );
+        try {
+            Post newPost = postFactory.createPost(
+                    UUID.randomUUID().toString(),
+                    post.getUserId(),
+                    post.getTitle(),
+                    post.getFrom(),
+                    post.getTo(),
+                    post.getDetails(),
+                    post.getNoOfSeats(),
+                    post.getStatus(),
+                    post.getTimestamp(),
+                    post.getComments()
+            );
 
-        return postRepository.save(newPost);
+            return postRepository.save(newPost);
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     public List<Post> findAllPosts() {

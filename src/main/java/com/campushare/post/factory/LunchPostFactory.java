@@ -19,7 +19,11 @@ public class LunchPostFactory extends PostFactory {
     }
 
     @Override
-    public Post createPost(String postId, String userId, String title, String from, String to, String details, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) {
-        return new LunchPost(postId, userId, title, from, to, details, Type.LUNCH, noOfSeats, status, timestamp, comments);
+    public Post createPost(String postId, String userId, String title, String from, String to, String details, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) throws IllegalArgumentException {
+        try {
+            return new LunchPost(postId, userId, title, from, to, details, Type.LUNCH, noOfSeats, status, timestamp, comments);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
     }
 }
