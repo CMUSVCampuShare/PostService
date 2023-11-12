@@ -16,6 +16,8 @@ public class Post {
     private String postId;
     private String userId;
     private String title;
+    private String from;
+    private String to;
     private String details;
     private Type type;
     private Integer noOfSeats;
@@ -23,13 +25,14 @@ public class Post {
     private Date timestamp;
     private List<Comment> comments;
 
-    public Post() {
-    }
+    public Post() {}
 
-    public Post(String postId, String userId, String title, String details, Type type, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) {
+    public Post(String postId, String userId, String title, String from, String to, String details, Type type, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
+        this.from = from;
+        this.to = to;
         this.details = details;
         this.type = type;
         this.noOfSeats = noOfSeats;

@@ -13,5 +13,5 @@ import java.util.List;
 public abstract class PostFactory {
 
     public abstract Type getType();
-    public abstract Post createPost(String postId, String userId, String title, String details, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments);
+    public abstract Post createPost(String postId, String userId, String title, String from, String to, String details, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments);
 }

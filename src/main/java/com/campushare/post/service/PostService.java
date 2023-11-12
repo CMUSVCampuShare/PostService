@@ -33,13 +33,14 @@ public class PostService {
             }
         }
 
-        //post.setPostId(UUID.randomUUID().toString());
         PostFactory postFactory = postFactoryRegistry.getPostFactory(post.getType());
 
         Post newPost = postFactory.createPost(
                 UUID.randomUUID().toString(),
                 post.getUserId(),
                 post.getTitle(),
+                post.getFrom(),
+                post.getTo(),
                 post.getDetails(),
                 post.getNoOfSeats(),
                 post.getStatus(),
@@ -84,6 +85,12 @@ public class PostService {
 
         if (post.getTitle() != null) {
             existingPost.setTitle(post.getTitle());
+        }
+        if (post.getFrom() != null) {
+            existingPost.setFrom(post.getFrom());
+        }
+        if (post.getTo() != null) {
+            existingPost.setTo(post.getTo());
         }
         if (post.getDetails() != null) {
             existingPost.setDetails(post.getDetails());

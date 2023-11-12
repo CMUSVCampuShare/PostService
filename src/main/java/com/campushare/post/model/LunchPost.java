@@ -9,7 +9,7 @@ import java.util.List;
 
 @Document(collection = "posts")
 public class LunchPost extends Post {
-    public LunchPost(String postId, String userId, String title, String details, Type type, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) {
-        super(postId, userId, title, details,type, noOfSeats, status, timestamp, comments);
+    public LunchPost(String postId, String userId, String title, String from, String to, String details, Type type, Integer noOfSeats, Status status, Date timestamp, List<Comment> comments) {
+        super(postId, userId, title, from, to, details,type, noOfSeats, status, timestamp, comments);
     }
 }
