@@ -1,6 +1,8 @@
 package com.campushare.post.service;
 
 import com.campushare.post.exception.PostNotFoundException;
+import com.campushare.post.factory.PostFactory;
+import com.campushare.post.factory.PostFactoryRegistry;
 import com.campushare.post.model.Post;
 import com.campushare.post.repository.PostRepository;
 import com.campushare.post.utils.Status;
@@ -17,6 +19,9 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private PostFactoryRegistry postFactoryRegistry;
+
     public Post addPost(Post post) throws IllegalArgumentException, PostNotFoundException {
         if (post == null) {
             throw new IllegalArgumentException("Post cannot be null.");
@@ -28,8 +33,21 @@ public class PostService {
             }
         }
 
-        post.setPostId(UUID.randomUUID().toString());
-        return postRepository.save(post);
+        //post.setPostId(UUID.randomUUID().toString());
+        PostFactory postFactory = postFactoryRegistry.getPostFactory(post.getType());
+
+        Post newPost = postFactory.createPost(
+                UUID.randomUUID().toString(),
+                post.getUserId(),
+                post.getTitle(),
+                post.getDetails(),
+                post.getNoOfSeats(),
+                post.getStatus(),
+                post.getTimestamp(),
+                post.getComments()
+        );
+
+        return postRepository.save(newPost);
     }
 
     public List<Post> findAllPosts() {
