@@ -2,6 +2,7 @@ package com.campushare.post.controller;
 
 import com.campushare.post.model.Comment;
 import com.campushare.post.model.Post;
+import com.campushare.post.request.PostRequest;
 import com.campushare.post.service.CommentService;
 import com.campushare.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,11 @@ public class CommentController {
             Comment createdComment = commentService.addComment(postId, comment);
 
             post.getComments().add(comment);
-            postService.updatePost(postId, post);
+
+            PostRequest postRequest = new PostRequest();
+            postRequest.setAttributesFromPost(post);
+
+            postService.updatePost(postId, postRequest);
 
             responseEntity = new ResponseEntity<>(createdComment, HttpStatus.CREATED);
         } catch (Exception ex) {

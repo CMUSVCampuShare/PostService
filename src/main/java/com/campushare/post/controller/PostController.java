@@ -3,6 +3,7 @@ package com.campushare.post.controller;
 import com.campushare.post.dto.PostDTO;
 import com.campushare.post.kafka.PostProducer;
 import com.campushare.post.model.Post;
+import com.campushare.post.request.PostRequest;
 import com.campushare.post.service.PostService;
 import com.campushare.post.utils.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,10 @@ public class PostController {
     private PostProducer postProducer;
 
     @PostMapping("/posts")
-    public ResponseEntity<Post> createPost(@RequestBody Post post){
+    public ResponseEntity<Post> createPost(@RequestBody PostRequest postRequest){
         ResponseEntity<Post> responseEntity;
         try {
-            Post createdPost = postService.addPost(post);
+            Post createdPost = postService.addPost(postRequest);
 
             PostDTO postDTO = new PostDTO();
             postDTO.setPost(createdPost);
@@ -75,10 +76,10 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}")
-    public ResponseEntity<Post> editPost(@PathVariable String postId, @RequestBody Post post) {
+    public ResponseEntity<Post> editPost(@PathVariable String postId, @RequestBody PostRequest postRequest) {
         ResponseEntity<Post> responseEntity;
         try {
-            Post editedPost = postService.updatePost(postId, post);
+            Post editedPost = postService.updatePost(postId, postRequest);
 
             PostDTO postDTO = new PostDTO();
             postDTO.setPost(editedPost);

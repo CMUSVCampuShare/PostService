@@ -5,6 +5,7 @@ import com.campushare.post.factory.PostFactory;
 import com.campushare.post.factory.PostFactoryRegistry;
 import com.campushare.post.model.Post;
 import com.campushare.post.repository.PostRepository;
+import com.campushare.post.request.PostRequest;
 import com.campushare.post.utils.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,25 +23,25 @@ public class PostService {
     @Autowired
     private PostFactoryRegistry postFactoryRegistry;
 
-    public Post addPost(Post post) throws IllegalArgumentException, PostNotFoundException {
-        if (post == null) {
+    public Post addPost(PostRequest postRequest) throws IllegalArgumentException, PostNotFoundException {
+        if (postRequest == null) {
             throw new IllegalArgumentException("Post cannot be null.");
         }
 
-        PostFactory postFactory = postFactoryRegistry.getPostFactory(post.getType());
+        PostFactory postFactory = postFactoryRegistry.getPostFactory(postRequest.getType());
 
         try {
             Post newPost = postFactory.createPost(
                     UUID.randomUUID().toString(),
-                    post.getUserId(),
-                    post.getTitle(),
-                    post.getFrom(),
-                    post.getTo(),
-                    post.getDetails(),
-                    post.getNoOfSeats(),
-                    post.getStatus(),
-                    post.getTimestamp(),
-                    post.getComments()
+                    postRequest.getUserId(),
+                    postRequest.getTitle(),
+                    postRequest.getFrom(),
+                    postRequest.getTo(),
+                    postRequest.getDetails(),
+                    postRequest.getNoOfSeats(),
+                    postRequest.getStatus(),
+                    postRequest.getTimestamp(),
+                    postRequest.getComments()
             );
 
             return postRepository.save(newPost);
@@ -69,8 +70,8 @@ public class PostService {
         return existingPost;
     }
 
-    public Post updatePost(String postId, Post post) throws IllegalArgumentException, PostNotFoundException {
-        if (post == null) {
+    public Post updatePost(String postId, PostRequest postRequest) throws IllegalArgumentException, PostNotFoundException {
+        if (postRequest == null) {
             throw new IllegalArgumentException("Post cannot be null.");
         }
 
@@ -81,29 +82,29 @@ public class PostService {
 
         Post existingPost = optionalExistingPost.get();
 
-        if (post.getTitle() != null) {
-            existingPost.setTitle(post.getTitle());
+        if (postRequest.getTitle() != null) {
+            existingPost.setTitle(postRequest.getTitle());
         }
-        if (post.getFrom() != null) {
-            existingPost.setFrom(post.getFrom());
+        if (postRequest.getFrom() != null) {
+            existingPost.setFrom(postRequest.getFrom());
         }
-        if (post.getTo() != null) {
-            existingPost.setTo(post.getTo());
+        if (postRequest.getTo() != null) {
+            existingPost.setTo(postRequest.getTo());
         }
-        if (post.getDetails() != null) {
-            existingPost.setDetails(post.getDetails());
+        if (postRequest.getDetails() != null) {
+            existingPost.setDetails(postRequest.getDetails());
         }
-        if (post.getType() != null) {
-            existingPost.setType(post.getType());
+        if (postRequest.getType() != null) {
+            existingPost.setType(postRequest.getType());
         }
-        if (post.getNoOfSeats() != null) {
-            if(isInvalidNoOfSeats(post)) {
+        if (postRequest.getNoOfSeats() != null) {
+            if(isInvalidNoOfSeats(postRequest)) {
                 throw new IllegalArgumentException("No of seats cannot be negative!");
             }
-            existingPost.setNoOfSeats(post.getNoOfSeats());
+            existingPost.setNoOfSeats(postRequest.getNoOfSeats());
         }
-        if (post.getStatus() != null) {
-            existingPost.setStatus(post.getStatus());
+        if (postRequest.getStatus() != null) {
+            existingPost.setStatus(postRequest.getStatus());
         }
 
         return postRepository.save(existingPost);
@@ -118,7 +119,7 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    private boolean isInvalidNoOfSeats(Post post) {
-        return post.getNoOfSeats() < 0;
+    private boolean isInvalidNoOfSeats(PostRequest postRequest) {
+        return postRequest.getNoOfSeats() < 0;
     }
 }
