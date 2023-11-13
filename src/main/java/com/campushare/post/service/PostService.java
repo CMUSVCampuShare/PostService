@@ -61,7 +61,7 @@ public class PostService {
     public Post findPostByPostId(String postId) throws PostNotFoundException {
         Optional<Post> optionalExistingPost = postRepository.findById(postId);
 
-        if (!optionalExistingPost.isPresent()) {
+        if (optionalExistingPost.isEmpty()) {
             throw new PostNotFoundException(postId);
         }
 
@@ -76,43 +76,20 @@ public class PostService {
         }
 
         Optional<Post> optionalExistingPost = postRepository.findById(postId);
-        if (!optionalExistingPost.isPresent()) {
+        if (optionalExistingPost.isEmpty()) {
             throw new PostNotFoundException(postId);
         }
 
         Post existingPost = optionalExistingPost.get();
 
-        if (postRequest.getTitle() != null) {
-            existingPost.setTitle(postRequest.getTitle());
-        }
-        if (postRequest.getFrom() != null) {
-            existingPost.setFrom(postRequest.getFrom());
-        }
-        if (postRequest.getTo() != null) {
-            existingPost.setTo(postRequest.getTo());
-        }
-        if (postRequest.getDetails() != null) {
-            existingPost.setDetails(postRequest.getDetails());
-        }
-        if (postRequest.getType() != null) {
-            existingPost.setType(postRequest.getType());
-        }
-        if (postRequest.getNoOfSeats() != null) {
-            if(isInvalidNoOfSeats(postRequest)) {
-                throw new IllegalArgumentException("No of seats cannot be negative!");
-            }
-            existingPost.setNoOfSeats(postRequest.getNoOfSeats());
-        }
-        if (postRequest.getStatus() != null) {
-            existingPost.setStatus(postRequest.getStatus());
-        }
+        existingPost.updatePost(postRequest);
 
         return postRepository.save(existingPost);
     }
 
     public void deletePost(String postId) throws PostNotFoundException {
         Optional<Post> optionalExistingPost = postRepository.findById(postId);
-        if (!optionalExistingPost.isPresent()) {
+        if (optionalExistingPost.isEmpty()) {
             throw new PostNotFoundException(postId);
         }
 

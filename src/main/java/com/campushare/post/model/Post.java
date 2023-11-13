@@ -1,5 +1,6 @@
 package com.campushare.post.model;
 
+import com.campushare.post.request.PostRequest;
 import com.campushare.post.utils.Status;
 import com.campushare.post.utils.Type;
 import lombok.Data;
@@ -43,6 +44,10 @@ public class Post {
     }
 
     protected void performNullChecks() throws IllegalArgumentException {
+        // ...
+    }
+
+    public void updatePost(PostRequest postRequest) throws  IllegalArgumentException {
         // ...
     }
 }

@@ -1,5 +1,6 @@
 package com.campushare.post.model;
 
+import com.campushare.post.request.PostRequest;
 import com.campushare.post.utils.Status;
 import com.campushare.post.utils.Type;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,13 +22,41 @@ public class RidePost extends Post{
         if (getFrom() == null) throw new IllegalArgumentException("from cannot be null");
         if (getTo() == null) throw new IllegalArgumentException("to cannot be null");
         if (getDetails() == null) throw new IllegalArgumentException("details cannot be null");
-        if (getNoOfSeats() == null || isInvalidNoOfSeats(this)) throw new IllegalArgumentException("noOfSeats cannot be null or negative!");
+        if (getNoOfSeats() == null || isInvalidNoOfSeats(getNoOfSeats())) throw new IllegalArgumentException("noOfSeats cannot be null or negative!");
         if (getStatus() == null) throw new IllegalArgumentException("status cannot be null");
         if (getTimestamp() == null) throw new IllegalArgumentException("timestamp cannot be null");
         if (getComments() == null) throw new IllegalArgumentException("comments cannot be null");
     }
 
-    private boolean isInvalidNoOfSeats(Post post) {
-        return post.getNoOfSeats() < 0;
+    @Override
+    public void updatePost(PostRequest postRequest) throws  IllegalArgumentException {
+        if (postRequest.getTitle() != null) {
+            this.setTitle(postRequest.getTitle());
+        }
+        if (postRequest.getFrom() != null) {
+            this.setFrom(postRequest.getFrom());
+        }
+        if (postRequest.getTo() != null) {
+            this.setTo(postRequest.getTo());
+        }
+        if (postRequest.getDetails() != null) {
+            this.setDetails(postRequest.getDetails());
+        }
+        if (postRequest.getType() != null) {
+            this.setType(postRequest.getType());
+        }
+        if (postRequest.getNoOfSeats() != null) {
+            if(isInvalidNoOfSeats(postRequest.getNoOfSeats())) {
+                throw new IllegalArgumentException("No of seats cannot be negative!");
+            }
+            this.setNoOfSeats(postRequest.getNoOfSeats());
+        }
+        if (postRequest.getStatus() != null) {
+            this.setStatus(postRequest.getStatus());
+        }
+    }
+
+    private boolean isInvalidNoOfSeats(Integer noOfSeats) {
+        return noOfSeats < 0;
     }
 }
