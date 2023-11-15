@@ -22,6 +22,10 @@ public class LunchPostFactory extends PostFactory {
     public Post createPost(PostRequest postRequest) throws IllegalArgumentException {
         try {
             performNullChecks(postRequest);
+            // type should be set to "LUNCH" enum
+            // noOfSeats must be >= 0
+            // not compulsory to have a timestamp, we can just create it!
+            // while creating posts, the comments will not be present and so just an empty array is created
             return new LunchPost(postRequest.getPostId(), postRequest.getUserId(),
                     postRequest.getTitle(), postRequest.getFrom(), postRequest.getTo(),
                     postRequest.getDetails(), Type.LUNCH, postRequest.getNoOfSeats(), postRequest.getStatus(),

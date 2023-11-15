@@ -20,6 +20,10 @@ public class RidePostFactory extends PostFactory {
     @Override
     public Post createPost(PostRequest postRequest) throws IllegalArgumentException {
         try {
+            // type should be set to "RIDE" enum
+            // noOfSeats must be > 0
+            // not compulsory to have a timestamp, we can just create it!
+            // while creating posts, the comments will not be present and so just an empty array is created
             performNullChecks(postRequest);
             return new RidePost(postRequest.getPostId(), postRequest.getUserId(),
                     postRequest.getTitle(), postRequest.getFrom(), postRequest.getTo(),
