@@ -40,11 +40,6 @@ public class Post {
         this.status = status;
         this.timestamp = timestamp;
         this.comments = comments;
-        performNullChecks();
-    }
-
-    protected void performNullChecks() throws IllegalArgumentException {
-        // ...
     }
 
     public void updatePost(PostRequest postRequest) throws  IllegalArgumentException {

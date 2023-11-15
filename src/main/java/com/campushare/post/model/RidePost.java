@@ -15,20 +15,6 @@ public class RidePost extends Post{
     }
 
     @Override
-    protected void performNullChecks() throws IllegalArgumentException {
-        if (getPostId() == null) throw new IllegalArgumentException("postId cannot be null");
-        if (getUserId() == null) throw new IllegalArgumentException("userId cannot be null");
-        if (getTitle() == null) throw new IllegalArgumentException("title cannot be null");
-        if (getFrom() == null) throw new IllegalArgumentException("from cannot be null");
-        if (getTo() == null) throw new IllegalArgumentException("to cannot be null");
-        if (getDetails() == null) throw new IllegalArgumentException("details cannot be null");
-        if (getNoOfSeats() == null || isInvalidNoOfSeats(getNoOfSeats())) throw new IllegalArgumentException("noOfSeats cannot be null or negative!");
-        if (getStatus() == null) throw new IllegalArgumentException("status cannot be null");
-        if (getTimestamp() == null) throw new IllegalArgumentException("timestamp cannot be null");
-        if (getComments() == null) throw new IllegalArgumentException("comments cannot be null");
-    }
-
-    @Override
     public void updatePost(PostRequest postRequest) throws  IllegalArgumentException {
         if (postRequest.getTitle() != null) {
             this.setTitle(postRequest.getTitle());
@@ -47,7 +33,7 @@ public class RidePost extends Post{
         }
         if (postRequest.getNoOfSeats() != null) {
             if(isInvalidNoOfSeats(postRequest.getNoOfSeats())) {
-                throw new IllegalArgumentException("No of seats cannot be negative!");
+                throw new IllegalArgumentException("noOfSeats has to be a positive integer!");
             }
             this.setNoOfSeats(postRequest.getNoOfSeats());
         }
@@ -57,6 +43,6 @@ public class RidePost extends Post{
     }
 
     private boolean isInvalidNoOfSeats(Integer noOfSeats) {
-        return noOfSeats < 0;
+        return noOfSeats <= 0;
     }
 }

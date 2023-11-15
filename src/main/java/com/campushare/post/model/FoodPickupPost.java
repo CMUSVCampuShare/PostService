@@ -15,18 +15,6 @@ public class FoodPickupPost extends Post {
     }
 
     @Override
-    protected void performNullChecks() throws IllegalArgumentException {
-        if (getPostId() == null) throw new IllegalArgumentException("postId cannot be null");
-        if (getUserId() == null) throw new IllegalArgumentException("userId cannot be null");
-        if (getTitle() == null) throw new IllegalArgumentException("title cannot be null");
-        if (getFrom() == null) throw new IllegalArgumentException("from cannot be null");
-        if (getDetails() == null) throw new IllegalArgumentException("details cannot be null");
-        if (getStatus() == null) throw new IllegalArgumentException("status cannot be null");
-        if (getTimestamp() == null) throw new IllegalArgumentException("timestamp cannot be null");
-        if (getComments() == null) throw new IllegalArgumentException("comments cannot be null");
-    }
-
-    @Override
     public void updatePost(PostRequest postRequest) throws  IllegalArgumentException {
         if (postRequest.getTitle() != null) {
             this.setTitle(postRequest.getTitle());

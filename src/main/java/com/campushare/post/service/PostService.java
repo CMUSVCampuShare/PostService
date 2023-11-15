@@ -31,18 +31,7 @@ public class PostService {
         PostFactory postFactory = postFactoryRegistry.getPostFactory(postRequest.getType());
 
         try {
-            Post newPost = postFactory.createPost(
-                    UUID.randomUUID().toString(),
-                    postRequest.getUserId(),
-                    postRequest.getTitle(),
-                    postRequest.getFrom(),
-                    postRequest.getTo(),
-                    postRequest.getDetails(),
-                    postRequest.getNoOfSeats(),
-                    postRequest.getStatus(),
-                    postRequest.getTimestamp(),
-                    postRequest.getComments()
-            );
+            Post newPost = postFactory.createPost(postRequest);
 
             return postRepository.save(newPost);
         } catch(IllegalArgumentException e) {
