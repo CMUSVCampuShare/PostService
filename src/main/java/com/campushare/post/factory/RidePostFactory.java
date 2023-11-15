@@ -41,8 +41,6 @@ public class RidePostFactory extends PostFactory {
         if (postRequest.getDetails() == null) throw new IllegalArgumentException("details cannot be null");
         if (postRequest.getNoOfSeats() == null || isNoOfSeatsNonPositive(postRequest.getNoOfSeats())) throw new IllegalArgumentException("noOfSeats cannot be null and has to be a positive integer!");
         if (postRequest.getStatus() == null) throw new IllegalArgumentException("status cannot be null");
-        if (postRequest.getTimestamp() == null) throw new IllegalArgumentException("timestamp cannot be null");
-        if (postRequest.getComments() == null) throw new IllegalArgumentException("comments cannot be null");
     }
 
     private boolean isNoOfSeatsNonPositive(Integer noOfSeats) {
