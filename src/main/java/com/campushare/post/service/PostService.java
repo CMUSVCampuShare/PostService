@@ -31,6 +31,7 @@ public class PostService {
         PostFactory postFactory = postFactoryRegistry.getPostFactory(postRequest.getType());
 
         try {
+            postRequest.setPostId(UUID.randomUUID().toString());
             Post newPost = postFactory.createPost(postRequest);
 
             return postRepository.save(newPost);
