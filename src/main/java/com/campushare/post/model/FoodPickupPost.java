@@ -16,33 +16,22 @@ public class FoodPickupPost extends Post {
 
     @Override
     public void updatePost(PostRequest postRequest) throws  IllegalArgumentException {
+        // cannot change postId, userId, to (always = ""),
+        // type (always "FOODPICKUP"), noOfSets (always = 0), timestamp
         if (postRequest.getTitle() != null) {
             this.setTitle(postRequest.getTitle());
         }
         if (postRequest.getFrom() != null) {
             this.setFrom(postRequest.getFrom());
         }
-        if (postRequest.getTo() != null) {
-            this.setTo(postRequest.getTo());
-        }
         if (postRequest.getDetails() != null) {
             this.setDetails(postRequest.getDetails());
-        }
-        if (postRequest.getType() != null) {
-            this.setType(postRequest.getType());
-        }
-        if (postRequest.getNoOfSeats() != null) {
-            if(isInvalidNoOfSeats(postRequest.getNoOfSeats())) {
-                throw new IllegalArgumentException("No of seats cannot be negative!");
-            }
-            this.setNoOfSeats(postRequest.getNoOfSeats());
         }
         if (postRequest.getStatus() != null) {
             this.setStatus(postRequest.getStatus());
         }
-    }
-
-    private boolean isInvalidNoOfSeats(Integer noOfSeats) {
-        return noOfSeats < 0;
+        if(postRequest.getComments() != null) {
+            this.setComments(postRequest.getComments());
+        }
     }
 }

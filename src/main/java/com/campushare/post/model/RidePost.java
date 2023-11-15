@@ -16,6 +16,7 @@ public class RidePost extends Post{
 
     @Override
     public void updatePost(PostRequest postRequest) throws  IllegalArgumentException {
+        // cannot change postId, userId, type (always "RIDE"), timestamp
         if (postRequest.getTitle() != null) {
             this.setTitle(postRequest.getTitle());
         }
@@ -28,11 +29,8 @@ public class RidePost extends Post{
         if (postRequest.getDetails() != null) {
             this.setDetails(postRequest.getDetails());
         }
-        if (postRequest.getType() != null) {
-            this.setType(postRequest.getType());
-        }
         if (postRequest.getNoOfSeats() != null) {
-            if(isInvalidNoOfSeats(postRequest.getNoOfSeats())) {
+            if(isNoOfSeatsNonPositive(postRequest.getNoOfSeats())) {
                 throw new IllegalArgumentException("noOfSeats has to be a positive integer!");
             }
             this.setNoOfSeats(postRequest.getNoOfSeats());
@@ -40,9 +38,12 @@ public class RidePost extends Post{
         if (postRequest.getStatus() != null) {
             this.setStatus(postRequest.getStatus());
         }
+        if(postRequest.getComments() != null) {
+            this.setComments(postRequest.getComments());
+        }
     }
 
-    private boolean isInvalidNoOfSeats(Integer noOfSeats) {
+    private boolean isNoOfSeatsNonPositive(Integer noOfSeats) {
         return noOfSeats <= 0;
     }
 }

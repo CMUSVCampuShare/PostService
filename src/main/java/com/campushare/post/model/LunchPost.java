@@ -16,6 +16,7 @@ public class LunchPost extends Post {
 
     @Override
     public void updatePost(PostRequest postRequest) throws  IllegalArgumentException {
+        // cannot change postId, userId, type (always "LUNCH"),  timestamp
         if (postRequest.getTitle() != null) {
             this.setTitle(postRequest.getTitle());
         }
@@ -28,21 +29,21 @@ public class LunchPost extends Post {
         if (postRequest.getDetails() != null) {
             this.setDetails(postRequest.getDetails());
         }
-        if (postRequest.getType() != null) {
-            this.setType(postRequest.getType());
-        }
         if (postRequest.getNoOfSeats() != null) {
-            if(isInvalidNoOfSeats(postRequest.getNoOfSeats())) {
-                throw new IllegalArgumentException("No of seats cannot be negative!");
+            if(isNoOfSeatsNegative(postRequest.getNoOfSeats())) {
+                throw new IllegalArgumentException("noOfSeats has to be a non-negative integer!");
             }
             this.setNoOfSeats(postRequest.getNoOfSeats());
         }
         if (postRequest.getStatus() != null) {
             this.setStatus(postRequest.getStatus());
         }
+        if(postRequest.getComments() != null) {
+            this.setComments(postRequest.getComments());
+        }
     }
 
-    private boolean isInvalidNoOfSeats(Integer noOfSeats) {
+    private boolean isNoOfSeatsNegative(Integer noOfSeats) {
         return noOfSeats < 0;
     }
 }
