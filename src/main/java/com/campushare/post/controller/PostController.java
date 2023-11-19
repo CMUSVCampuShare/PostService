@@ -93,7 +93,7 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<Void> deletePost(@RequestBody String postId){
+    public ResponseEntity<Void> deletePost(@PathVariable String postId){
         ResponseEntity<Void> responseEntity = null;
         postService.deletePost(postId);
         responseEntity = new ResponseEntity<>(HttpStatus.OK);
