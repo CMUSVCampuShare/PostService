@@ -23,8 +23,9 @@ public class CommentService {
             throw new IllegalArgumentException("Comment cannot be null.");
         }
 
-        comment.setCommentId(UUID.randomUUID().toString().split("-")[0]);
+        comment.setCommentId(UUID.randomUUID().toString());
         comment.setPostId(postId);
+        System.out.println("Comment in addComment: " + comment);
         return commentRepository.save(comment);
     }
 
