@@ -75,6 +75,18 @@ public class PostController {
         return responseEntity;
     }
 
+    @GetMapping("/users/{userId}/posts")
+    public ResponseEntity<List<Post>> getPostsByUserId(@PathVariable String userId){
+        ResponseEntity<List<Post>> responseEntity;
+        try {
+            List<Post> posts = postService.findPostsByUserId(userId);
+            responseEntity = new ResponseEntity<>(posts, HttpStatus.OK);
+        } catch (Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
     @PutMapping("/posts/{postId}")
     public ResponseEntity<Post> editPost(@PathVariable String postId, @RequestBody PostRequest postRequest) {
         ResponseEntity<Post> responseEntity;

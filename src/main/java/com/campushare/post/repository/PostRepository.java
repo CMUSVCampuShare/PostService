@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface PostRepository extends MongoRepository<Post,String> {
     List<Post> findByStatusNot(Status status);
+    List<Post> findByUserId(String userId);
 }

@@ -60,6 +60,10 @@ public class PostService {
         return existingPost;
     }
 
+    public List<Post> findPostsByUserId(String userId) {
+        return postRepository.findByUserId(userId);
+    }
+
     public Post updatePost(String postId, PostRequest postRequest) throws IllegalArgumentException, PostNotFoundException {
         if (postRequest == null) {
             throw new IllegalArgumentException("Post cannot be null.");
