@@ -89,8 +89,4 @@ public class PostService {
 
         postRepository.deleteById(postId);
     }
-
-    private boolean isInvalidNoOfSeats(PostRequest postRequest) {
-        return postRequest.getNoOfSeats() < 0;
-    }
 }
