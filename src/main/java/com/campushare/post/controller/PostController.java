@@ -107,8 +107,12 @@ public class PostController {
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable String postId){
         ResponseEntity<Void> responseEntity = null;
-        postService.deletePost(postId);
-        responseEntity = new ResponseEntity<>(HttpStatus.OK);
+        try {
+            postService.deletePost(postId);
+            responseEntity = new ResponseEntity<>(HttpStatus.OK);
+        } catch(Exception ex) {
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return responseEntity;
     }
 }
