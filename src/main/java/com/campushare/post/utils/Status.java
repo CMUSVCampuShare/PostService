@@ -4,6 +4,6 @@ public enum Status {
     CREATED,
     ONGOING,
     FULL,
-    COMPLETE,
+    COMPLETED,
     CANCELED
 }
